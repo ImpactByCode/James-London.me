@@ -1,0 +1,40 @@
+---
+name: NeuralVault Backup to Google Drive
+
+'on':
+  push:
+    branches:
+      - main
+
+jobs:
+  backup-to-gdrive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for complete backup
+
+      - name: Create timestamp
+        id: timestamp
+        run: |
+          echo "timestamp=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Zip entire repository
+        run: |
+          cd ${{ github.workspace }}
+          zip -r ../backup_${{ steps.timestamp.outputs.timestamp }}.zip . \
+            -x ".git/*"
+          mv ../backup_${{ steps.timestamp.outputs.timestamp }}.zip \
+            ./backup_${{ steps.timestamp.outputs.timestamp }}.zip
+
+      - name: Upload to Google Drive
+        uses: adityak74/google-drive-upload-git-action@v0.3
+        with:
+          credentials: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+          filename: backup_${{ steps.timestamp.outputs.timestamp }}.zip
+          folderId: ${{ secrets.GDRIVE_FOLDER_ID }}
+          name: >-
+            James-London.me_backup_${{ steps.timestamp.outputs.timestamp }}.zip
+          overwrite: "false"
