@@ -9,6 +9,8 @@ name: NeuralVault Backup to Google Drive
 jobs:
   backup-to-gdrive:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
