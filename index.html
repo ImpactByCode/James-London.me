@@ -1,41 +1,275 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>James London — Digital Strategist & IT Consultant</title>
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin: 4rem; color:#111; background:#f7f7f8; }
-    header { margin-bottom: 2rem; }
-    h1 { margin: 0 0 .25rem 0; font-size: 2rem; }
-    p.lead { margin:0; color:#444; }
-    a { color:#0366d6; text-decoration:none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>James London — Architect of Restoration</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #D4AF37;
+  --bg: #0a0a0a;
+  --card: #111;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  z-index: 1000;
+}
+
+header nav {
+  color: #aaa;
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  position: relative;
+  background: url('your-image.jpg') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), #0a0a0a);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 64px;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 0 0 20px rgba(212,175,55,0.4);
+}
+
+.hero p {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #ccc;
+}
+
+.buttons {
+  margin-top: 30px;
+}
+
+.buttons button {
+  padding: 12px 24px;
+  margin-right: 15px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttons button:hover {
+  background: var(--gold);
+  color: black;
+  box-shadow: 0 0 15px rgba(212,175,55,0.6);
+}
+
+/* RAIN EFFECT */
+.rain {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.drop {
+  position: absolute;
+  bottom: 100%;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(transparent, rgba(255,255,255,0.3));
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+/* SECTIONS */
+.section {
+  padding: 80px 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border: 1px solid #222;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,0.2);
+}
+
+/* FOOTER */
+footer {
+  background: #050505;
+  padding: 60px 40px;
+  border-top: 1px solid #222;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+}
+
+footer h3 {
+  color: var(--gold);
+}
+
+footer p, footer a {
+  color: #888;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--gold);
+}
+
+/* LIVE BAR */
+.live {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.8);
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: #aaa;
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>James London</h1>
-    <p class="lead">Digital Strategist &amp; IT Consultant — Welcome to James-London.me</p>
-  </header>
 
-  <main>
-    <section>
-      <h2>About</h2>
-      <p>This is a simple starter site. I can help expand this into a portfolio, blog, or static site generator (Jekyll, Eleventy, Next.js, etc.).</p>
-    </section>
+<div class="rain" id="rain"></div>
 
-    <section>
-      <h2>Next steps</h2>
-      <ul>
-        <li>Add more content or a site generator</li>
-        <li>Confirm DNS configuration for James-London.me</li>
-        <li>Enable GitHub Pages in repository settings (source: main)</li>
-      </ul>
-    </section>
-  </main>
+<header>
+  <div>JAMES LONDON // SYSTEM</div>
+  <nav>Founder’s Voice | System | Log | Enter</nav>
+</header>
 
-  <footer>
-    <p>Hosted on GitHub Pages • <a href="https://github.com/ImpactByCode/James-London.me">repo</a></p>
-  </footer>
+<section class="hero">
+  <div class="hero-content">
+    <h1>ARCHITECT OF RESTORATION</h1>
+    <p>
+      James London // Archivo Black<br>
+      Turning survival into systems. Building legacy in real time.
+    </p>
+
+    <div class="buttons">
+      <button>ENTER THE SYSTEM</button>
+      <button>WATCH FOUNDER’S VOICE</button>
+    </div>
+  </div>
+
+  <div class="live">
+    LIVE SYSTEM STATUS: Build Phase: Active | Programs: 33 | Execution: Scaling | Alignment: In Progress
+  </div>
+</section>
+
+<section class="section">
+  <h2>THE ARCHITECTURE</h2>
+  <div class="grid">
+    <div class="card">Alignment — Internal foundation comes first</div>
+    <div class="card">Execution — Systems over ideas</div>
+    <div class="card">Structure — Built to scale</div>
+    <div class="card">Pressure — Reveals truth</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h3>James London</h3>
+      <p>Architect of Restoration. Building systems in real-time.</p>
+    </div>
+
+    <div>
+      <h3>Navigation</h3>
+      <p><a href="#">Founder’s Voice</a></p>
+      <p><a href="#">The System</a></p>
+      <p><a href="#">Live Log</a></p>
+    </div>
+
+    <div>
+      <h3>System</h3>
+      <p>Execution</p>
+      <p>Alignment</p>
+      <p>Structure</p>
+    </div>
+
+    <div>
+      <h3>Access</h3>
+      <p><a href="#">Enter System</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Generate rain drops
+const rain = document.getElementById('rain');
+
+for (let i = 0; i < 120; i++) {
+  let drop = document.createElement('div');
+  drop.classList.add('drop');
+
+  drop.style.left = Math.random() * 100 + 'vw';
+  drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+  drop.style.opacity = Math.random();
+
+  rain.appendChild(drop);
+}
+</script>
+
 </body>
 </html>
