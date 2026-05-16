@@ -1,114 +1,12 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* BODY */
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  color: white;
-  overflow: hidden;
-}
-
-/* BACKGROUND IMAGE */
 .background {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("./tulsa.jpg") no-repeat center center;
+
+  /* ✅ FIXED PATH */
+  background: url("./assets/tulsa.jpg") no-repeat center center;
+
   background-size: cover;
   z-index: -1;
-
-  /* slight dark overlay */
   filter: brightness(0.5);
 }
-
-/* HEADER */
-.header {
-  position: absolute;
-  top: 20px;
-  left: 40px;
-  right: 40px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* LOGO TEXT */
-.logo-text {
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-
-/* NAV */
-.nav a {
-  margin-left: 25px;
-  text-decoration: none;
-  color: white;
-  font-size: 14px;
-  letter-spacing: 1px;
-}
-
-/* CENTER */
-.center-container {
-  width: 100%;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* PARCHMENT BOX */
-.parchment {
-  width: 500px;
-  padding: 40px;
-
-  text-align: center;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* LOGO */
-.phoenix {
-  width: 120px;
-  margin-bottom: 20px;
-}
-
-/* TITLE */
-h1 {
-  font-size: 28px;
-  margin-bottom: 15px;
-  letter-spacing: 2px;
-}
-
-/* TAGLINE */
-.tagline {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 25px;
-}
-
-/* BUTTON */
-.cta {
-  padding: 10px 20px;
-  border: none;
-  background: gold;
-  color: black;
-  cursor: pointer;
-  font-weight: bold;
-
-  transition: 0.3s;
-}
-
-.cta:hover {
-  background: white;
-}
-``
