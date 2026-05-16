@@ -1,136 +1,79 @@
-/* RESET */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    color: white;
+html, body {
+  height: 100%;
+  font-family: 'Cinzel', serif;
+  overflow: hidden;
+  background: #000;
 }
 
-/* ✅ SCENE — ISOLATES RENDER LAYERS */
-.scene {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* ✅ BACKGROUND — PURE IMAGE (NO BLUR EVER) */
+/* Background (NO BLUR, NO FILTERS) */
 .background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-
-    background: url('assets/tulsa.jpg') no-repeat center center;
-    background-size: cover;
-
-    z-index: 0;
+  position: fixed;
+  inset: 0;
+  background: url('/assets/tulsa.jpg') center/cover no-repeat;
+  z-index: 0;
 }
 
-/* ✅ RAIN — INDEPENDENT LAYER */
-#rainCanvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-
-    pointer-events: none;
-
-    z-index: 1;
-
-    /* ✅ prevents “visual washout” */
-    opacity: 0.65;
+/* Optional dark cinematic overlay */
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
 }
 
-/* HEADER */
+/* Header */
 .header {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 25px 40px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    z-index: 10;
+  position: fixed;
+  top: 30px;
+  left: 40px;
+  color: white;
+  font-size: 20px;
+  letter-spacing: 2px;
+  z-index: 10;
 }
 
-.logo-text {
-    font-size: 22px;
-    letter-spacing: 3px;
-    font-weight: bold;
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  display: flex;
+  gap: 25px;
+  z-index: 10;
 }
 
-/* NAV */
 .nav a {
-    margin-left: 25px;
-    text-decoration: none;
-    color: white;
-    font-size: 14px;
-    opacity: 0.9;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 2px;
 }
 
-.nav a:hover {
-    opacity: 1;
-}
-
-/* MAIN */
+/* Container (NO BLUR) */
 .container {
-    position: relative;
-    z-index: 5;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 520px;
+  padding: 40px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+
+  text-align: center;
+  color: white;
+
+  z-index: 5;
 }
 
-/* ✅ PARCHMENT — CLEAN GLASS, NO BLUR */
-.parchment {
-    width: 900px;
-    padding: 40px;
-    border-radius: 12px;
-
-    background: rgba(20, 20, 20, 0.75);
-
-    border: 1px solid rgba(255, 215, 0, 0.25);
-
-    box-shadow:
-        0 0 40px rgba(0,0,0,0.8),
-        inset 0 0 10px rgba(255,215,0,0.05);
-}
-
-/* LOGO */
-.center-logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-}
-
-.center-logo img {
-    width: 160px;
-}
-
-/* CONTENT */
-.content {
-    display: flex;
-    gap: 20px;
-}
-
-.panel {
-    flex: 1;
-    padding: 20px;
-    border-radius: 8px;
-
-    background: rgba(0,0,0,0.5);
-}
-
-.panel h2 {
-    margin-bottom: 10px;
-    color: gold;
+.logo {
+  width: 200px;
+  margin-bottom: 20px;
 }
