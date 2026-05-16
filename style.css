@@ -1,12 +1,110 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+}
+
+/* BACKGROUND */
 .background {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('assets/tulsa.jpg') no-repeat center center/cover;
+    z-index: -1;
+}
 
-  /* ✅ FIXED PATH */
-  background: url("./assets/tulsa.jpg") no-repeat center center;
+/* HEADER */
+.header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-  background-size: cover;
-  z-index: -1;
-  filter: brightness(0.5);
+.logo-text {
+    font-size: 22px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.nav a:hover {
+    opacity: 1;
+}
+
+/* MAIN */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* PARCHMENT */
+.parchment {
+    width: 900px;
+    padding: 40px;
+    border-radius: 12px;
+
+    background: rgba(255, 248, 220, 0.08);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 215, 0, 0.25);
+}
+
+/* LOGO */
+.center-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.center-logo img {
+    width: 160px;
+    opacity: 0.95;
+}
+
+/* CONTENT GRID */
+.content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.panel {
+    flex: 1;
+    padding: 20px;
+    border-radius: 8px;
+
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,215,0,0.2);
+}
+
+.panel h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: gold;
+}
+
+.panel p {
+    font-size: 14px;
+    opacity: 0.85;
 }
