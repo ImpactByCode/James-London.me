@@ -1,143 +1,114 @@
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
 }
 
+/* BODY */
 body {
-  background: url('../assets/tulsa.jpg') center/cover no-repeat;
+  font-family: Arial, Helvetica, sans-serif;
   color: white;
   overflow: hidden;
 }
 
-/* TOP NAV */
-.top-bar {
-  position: absolute;
+/* BACKGROUND IMAGE */
+.background {
+  position: fixed;
   width: 100%;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 10;
+  height: 100%;
+  background: url("./tulsa.jpg") no-repeat center center;
+  background-size: cover;
+  z-index: -1;
+
+  /* slight dark overlay */
+  filter: brightness(0.5);
 }
 
-.logo {
-  font-size: 24px;
+/* HEADER */
+.header {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  right: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LOGO TEXT */
+.logo-text {
+  font-size: 18px;
   letter-spacing: 2px;
 }
 
-.command-nav button {
-  margin-left: 10px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  border: 1px solid #4da3ff;
-  background: rgba(20,40,70,0.7);
+/* NAV */
+.nav a {
+  margin-left: 25px;
+  text-decoration: none;
   color: white;
-  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 1px;
 }
 
-/* HERO */
-.hero {
+/* CENTER */
+.center-container {
+  width: 100%;
   height: 100vh;
-  position: relative;
+
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-/* GRID */
-.grid-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(#1b2c45 1px, transparent 1px),
-                    linear-gradient(90deg, #1b2c45 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.15;
-}
+/* PARCHMENT BOX */
+.parchment {
+  width: 500px;
+  padding: 40px;
 
-/* RAIN */
-#rain {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-/* PHOENIX */
-.phoenix-core {
-  z-index: 3;
-}
-
-.phoenix-core img {
-  width: 320px;
-  animation: pulse 3s infinite ease-in-out;
-}
-
-/* PROTOCOLS */
-.protocol {
-  position: absolute;
-  padding: 10px 14px;
-  border-radius: 6px;
-  background: rgba(20,40,70,0.9);
-  border: 1px solid #4da3ff;
-  color: white;
-  z-index: 4;
-  transition: 0.3s;
-}
-
-.protocol:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #4da3ff;
-}
-
-/* POSITIONS */
-.protocol-a { top: 35%; left: 10%; }
-.protocol-b { top: 30%; right: 10%; }
-.protocol-c { bottom: 30%; right: 12%; }
-
-/* HEADLINE */
-.headline {
   text-align: center;
-  margin-top: 20px;
-  z-index: 5;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
-.headline h1 {
-  font-size: 44px;
+/* LOGO */
+.phoenix {
+  width: 120px;
+  margin-bottom: 20px;
 }
 
-.headline p {
-  margin-top: 10px;
-  font-size: 18px;
+/* TITLE */
+h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+/* TAGLINE */
+.tagline {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 25px;
 }
 
 /* BUTTON */
 .cta {
-  margin-top: 30px;
-  padding: 14px 30px;
-  font-size: 18px;
-  border-radius: 8px;
+  padding: 10px 20px;
   border: none;
-  background: linear-gradient(135deg, #2b7cff, #132e6d);
-  color: white;
+  background: gold;
+  color: black;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(77,163,255,0.7);
-  z-index: 5;
+  font-weight: bold;
+
+  transition: 0.3s;
 }
 
-/* SYSTEM ICON */
-.system-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 22px;
+.cta:hover {
+  background: white;
 }
-
-/* PHOENIX PULSE */
-@keyframes pulse {
-  0% { filter: drop-shadow(0 0 15px gold); }
-  50% { filter: drop-shadow(0 0 35px #ffd700); }
-  100% { filter: drop-shadow(0 0 15px gold); }
-}
+``
