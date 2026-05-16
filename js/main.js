@@ -4,55 +4,64 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// ===== RAIN CONFIG =====
+// ===== CONFIG =====
 const drops = [];
-const dropCount = 500;
+const dropCount = 600;
 
 for (let i = 0; i < dropCount; i++) {
-    const depth = Math.random(); // 0 = far, 1 = near
+    const depth = Math.random();
 
     drops.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
 
-        length: 10 + Math.random() * 20 * depth,
-        speed: 3 + Math.random() * 6 * depth,
+        speed: 4 + depth * 10,
+        length: 10 + depth * 25,
 
-        opacity: 0.2 + Math.random() * 0.6 * depth,
-        thickness: 0.5 + depth * 1.2,
+        thickness: 0.5 + depth * 1.5,
+        opacity: 0.15 + depth * 0.7,
 
-        wind: 0.4 + Math.random() * 0.6,
-        depth: depth
+        wind: 0.3 + Math.random() * 0.5,
+
+        // ✅ TRAIL MEMORY
+        trail: []
     });
 }
 
 // ===== DRAW LOOP =====
 function drawRain() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // IMPORTANT: semi-clear = motion blur effect
+    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     drops.forEach(drop => {
-        ctx.beginPath();
+        // store trail
+        drop.trail.push({ x: drop.x, y: drop.y });
 
-        // gradient stroke = tapered rain
-        const gradient = ctx.createLinearGradient(
-            drop.x,
-            drop.y,
-            drop.x + drop.wind * 2,
-            drop.y + drop.length
-        );
+        if (drop.trail.length > 5) {
+            drop.trail.shift();
+        }
 
-        gradient.addColorStop(0, `rgba(255,255,255,0)`); // tip fades
-        gradient.addColorStop(0.5, `rgba(255,255,255,${drop.opacity})`);
-        gradient.addColorStop(1, `rgba(255,255,255,0)`);
+        for (let i = 0; i < drop.trail.length; i++) {
+            const t = drop.trail[i];
+            const alpha = (i / drop.trail.length) * drop.opacity;
 
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = drop.thickness;
+            ctx.beginPath();
 
-        ctx.moveTo(drop.x, drop.y);
-        ctx.lineTo(drop.x + drop.wind * 2, drop.y + drop.length);
-        ctx.stroke();
+            ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+            ctx.lineWidth = drop.thickness;
 
-        // movement
+            ctx.moveTo(t.x, t.y);
+            ctx.lineTo(
+                t.x + drop.wind * 2,
+                t.y + drop.length
+            );
+
+            ctx.stroke();
+        }
+
+        // ✅ GRAVITY ACCELERATION
+        drop.speed += 0.05;
         drop.y += drop.speed;
         drop.x += drop.wind;
 
@@ -60,6 +69,8 @@ function drawRain() {
         if (drop.y > canvas.height) {
             drop.y = -20;
             drop.x = Math.random() * canvas.width;
+            drop.speed = 4 + drop.opacity * 10;
+            drop.trail = [];
         }
     });
 
