@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const rainDrops = [];
-const dropCount = 300;
+const dropCount = 350;
 
 // create drops
 for (let i = 0; i < dropCount; i++) {
@@ -20,7 +20,8 @@ for (let i = 0; i < dropCount; i++) {
 function drawRain() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = 0.7;
+    ctx.strokeStyle = "rgba(255,255,255,0.9)"; // ✅ SHARP RAIN
 
     rainDrops.forEach(drop => {
         ctx.beginPath();
@@ -41,3 +42,9 @@ function drawRain() {
 }
 
 drawRain();
+
+// resize fix
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
