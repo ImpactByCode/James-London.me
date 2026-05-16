@@ -1,18 +1,22 @@
-// ===== SETUP =====
+console.log("NEW SHADER BUILD RUNNING ✅");
+
+// ===== SCENE =====
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById("webgl")
+  canvas: document.getElementById("webgl"),
+  antialias: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // ===== TEXTURES =====
 const loader = new THREE.TextureLoader();
+
 const bgTexture = loader.load("assets/tulsa.jpg");
 const phoenixTexture = loader.load("assets/phoenix.png");
 
-// ===== PARALLAX CONTROL =====
+// ===== MOUSE PARALLAX =====
 let mouseX = 0;
 let mouseY = 0;
 
@@ -29,8 +33,7 @@ class Droplet {
   constructor(x, y, layer = 1) {
     this.x = x;
     this.y = y;
-
-    this.layer = layer; // 1 = foreground, 0 = background
+    this.layer = layer;
 
     this.vy = 0.001 + Math.random() * 0.002;
     this.vx = (Math.random() - 0.5) * 0.0005;
@@ -39,32 +42,26 @@ class Droplet {
       ? Math.random() * 0.01 + 0.004
       : Math.random() * 0.004 + 0.002;
 
-    this.life = 1;
-
-    // ✅ TRAIL MEMORY
     this.trail = [];
-    this.maxTrail = layer === 1 ? 12 : 6;
+    this.maxTrail = layer === 1 ? 10 : 5;
+
+    this.life = 1;
   }
 
   update() {
-
-    // gravity + variation
     this.vy += 0.002;
-
-    // glass drag
     this.vy *= 0.993;
 
     this.x += this.vx;
     this.y += this.vy;
 
-    // occasional streak
     if (Math.random() < 0.0015) {
       this.vy += 0.04;
     }
 
     this.vx *= 0.98;
 
-    // ✅ TRAIL TRACKING
+    // ✅ trail memory
     this.trail.push({ x: this.x, y: this.y });
 
     if (this.trail.length > this.maxTrail) {
@@ -78,7 +75,7 @@ class Droplet {
 // ===== SPAWN =====
 function spawnRain() {
   if (droplets.length < maxDrops && Math.random() < 0.25) {
-    const layer = Math.random() < 0.6 ? 1 : 0; // mix layers
+    const layer = Math.random() < 0.6 ? 1 : 0;
     droplets.push(new Droplet(Math.random(), 0, layer));
   }
 }
@@ -103,47 +100,36 @@ const material = new THREE.ShaderMaterial({
     uniform float droplets[400];
 
     void main() {
-
       vec2 uv = gl_FragCoord.xy / resolution;
 
       vec2 distortion = vec2(0.0);
 
       for (int i = 0; i < 100; i++) {
-
         float x = droplets[i*4];
         float y = droplets[i*4+1];
         float r = droplets[i*4+2];
         float layer = droplets[i*4+3];
 
         vec2 pos = vec2(x, y);
-
         float d = distance(uv, pos);
 
         if (d < r) {
-
           float strength = (r - d) / r;
-
-          // ✅ depth-based distortion
-          float depthFactor = mix(0.4, 1.0, layer);
+          float depth = mix(0.4, 1.0, layer);
 
           distortion += vec2(
-            (uv.x - pos.x) * 0.02 * depthFactor,
-            strength * 0.07 * depthFactor
+            (uv.x - pos.x) * 0.02 * depth,
+            strength * 0.07 * depth
           );
         }
       }
 
-      // ✅ CAMERA PARALLAX OFFSET
-      vec2 camOffset = vec2(
-        (0.5 - uv.x) * 0.01,
-        (0.5 - uv.y) * 0.01
-      );
-
-      vec2 uv2 = uv + distortion + camOffset;
+      vec2 uv2 = uv + distortion;
 
       vec4 bg = texture2D(background, uv2);
       vec4 ph = texture2D(phoenix, uv2);
 
+      // ✅ subtle phoenix (CORRECTED)
       float phLight = dot(ph.rgb, vec3(0.2126,0.7152,0.0722));
       phLight *= 0.18;
 
@@ -153,10 +139,13 @@ const material = new THREE.ShaderMaterial({
 
       vec3 color = bg.rgb;
 
+      // ONLY through water
       color += gold * phLight * mask;
 
+      // subtle water highlights
       color += length(distortion) * 0.6;
 
+      // micro grain
       float grain = fract(sin(dot(uv * 900.0, vec2(12.9,78.2))) * 43758.5);
       color += (grain - 0.5) * 0.008;
 
@@ -175,7 +164,7 @@ function updateDrops() {
 
   droplets.forEach(d => d.update());
 
-  for (let i = droplets.length-1; i>=0; i--) {
+  for (let i = droplets.length-1; i >= 0; i--) {
     if (droplets[i].life <= 0) droplets.splice(i,1);
   }
 
@@ -200,9 +189,10 @@ function updateDrops() {
 
 // ===== LOOP =====
 function animate() {
+
   updateDrops();
 
-  // ✅ apply parallax camera movement
+  // ✅ PARALLAX
   scene.position.x = mouseX * 0.03;
   scene.position.y = -mouseY * 0.03;
 
