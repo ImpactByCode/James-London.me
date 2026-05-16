@@ -1,70 +1,64 @@
-// ========================// =================EventListener("click", () => {
-  console.log("INITIATE PROTOCOL TRIGGERED");
-});
-
-// ========================
-// RAIN ENGINE
-// ========================
-const canvas = document.getElementById("rain");
+// ===== SETUP =====
+const canvas = document.getElementById("rainCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let rain = [];
+// ===== RAIN SYSTEM =====
+const rainDrops = [];
+const dropCount = 400;
 
-// create drops
-for (let i = 0; i < 200; i++) {
-  rain.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    length: Math.random() * 10,
-    speed: Math.random() * 4 + 2
-  });
+for (let i = 0; i < dropCount; i++) {
+    rainDrops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        len: Math.random() * 20 + 10,
+        speed: Math.random() * 6 + 4,
+        opacity: Math.random() * 0.5 + 0.2
+    });
 }
 
 function drawRain() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "rgba(174,194,224,0.6)";
-  ctx.lineWidth = 1;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.beginPath();
-  rain.forEach(drop => {
-    ctx.moveTo(drop.x, drop.y);
-    ctx.lineTo(drop.x, drop.y + drop.length);
-  });
-  ctx.stroke();
+    ctx.lineWidth = 1;
+
+    rainDrops.forEach(drop => {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255,255,255,${drop.opacity})`;
+
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x + 2, drop.y + drop.len);
+
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        drop.x += 0.5;
+
+        if (drop.y > canvas.height) {
+            drop.y = -20;
+            drop.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(drawRain);
 }
 
-function updateRain() {
-  rain.forEach(drop => {
-    drop.y += drop.speed;
+drawRain();
 
-    if (drop.y > canvas.height) {
-      drop.y = -20;
-      drop.x = Math.random() * canvas.width;
-    }
-  });
-}
+// ===== PARALLAX =====
+const bg = document.querySelector(".background");
 
-function animateRain() {
-  drawRain();
-  updateRain();
-  requestAnimationFrame(animateRain);
-}
-
-animateRain();
-
-// ========================
-// PARALLAX
-// ========================
 document.addEventListener("mousemove", (e) => {
-  let x = (e.clientX / window.innerWidth - 0.5) * 10;
-  let y = (e.clientY / window.innerHeight - 0.5) * 10;
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
 
-  document.querySelector(".hero").style.transform =
-    `translate(${x}px, ${y}px)`;
+    bg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
 });
 
-// CTA CLICK
-// ========================
+// ===== RESIZE =====
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
