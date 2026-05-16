@@ -9,28 +9,46 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 // ===== TEXTURES =====
 const loader = new THREE.TextureLoader();
-
 const bgTexture = loader.load("assets/tulsa.jpg");
 const phoenixTexture = loader.load("assets/phoenix.png");
+
+// ===== PARALLAX CONTROL =====
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5);
+  mouseY = (e.clientY / window.innerHeight - 0.5);
+});
 
 // ===== DROPLETS =====
 const droplets = [];
 const maxDrops = 50;
 
 class Droplet {
-  constructor(x, y) {
+  constructor(x, y, layer = 1) {
     this.x = x;
     this.y = y;
+
+    this.layer = layer; // 1 = foreground, 0 = background
 
     this.vy = 0.001 + Math.random() * 0.002;
     this.vx = (Math.random() - 0.5) * 0.0005;
 
-    this.radius = Math.random() * 0.01 + 0.004;
+    this.radius = layer === 1
+      ? Math.random() * 0.01 + 0.004
+      : Math.random() * 0.004 + 0.002;
+
     this.life = 1;
+
+    // ✅ TRAIL MEMORY
+    this.trail = [];
+    this.maxTrail = layer === 1 ? 12 : 6;
   }
 
   update() {
-    // slow heavy movement
+
+    // gravity + variation
     this.vy += 0.002;
 
     // glass drag
@@ -39,13 +57,19 @@ class Droplet {
     this.x += this.vx;
     this.y += this.vy;
 
-    // occasional streak drop
+    // occasional streak
     if (Math.random() < 0.0015) {
       this.vy += 0.04;
     }
 
-    // slight horizontal drift
     this.vx *= 0.98;
+
+    // ✅ TRAIL TRACKING
+    this.trail.push({ x: this.x, y: this.y });
+
+    if (this.trail.length > this.maxTrail) {
+      this.trail.shift();
+    }
 
     this.life -= 0.0012;
   }
@@ -54,12 +78,13 @@ class Droplet {
 // ===== SPAWN =====
 function spawnRain() {
   if (droplets.length < maxDrops && Math.random() < 0.25) {
-    droplets.push(new Droplet(Math.random(), 0));
+    const layer = Math.random() < 0.6 ? 1 : 0; // mix layers
+    droplets.push(new Droplet(Math.random(), 0, layer));
   }
 }
 
 // ===== SHADER DATA =====
-const dropData = new Float32Array(200);
+const dropData = new Float32Array(400);
 
 const uniforms = {
   resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
@@ -75,7 +100,7 @@ const material = new THREE.ShaderMaterial({
     uniform vec2 resolution;
     uniform sampler2D background;
     uniform sampler2D phoenix;
-    uniform float droplets[200];
+    uniform float droplets[400];
 
     void main() {
 
@@ -83,11 +108,12 @@ const material = new THREE.ShaderMaterial({
 
       vec2 distortion = vec2(0.0);
 
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 100; i++) {
 
         float x = droplets[i*4];
         float y = droplets[i*4+1];
         float r = droplets[i*4+2];
+        float layer = droplets[i*4+3];
 
         vec2 pos = vec2(x, y);
 
@@ -97,20 +123,27 @@ const material = new THREE.ShaderMaterial({
 
           float strength = (r - d) / r;
 
-          // ✅ vertical distortion dominance
+          // ✅ depth-based distortion
+          float depthFactor = mix(0.4, 1.0, layer);
+
           distortion += vec2(
-            (uv.x - pos.x) * 0.02,
-            strength * 0.07
+            (uv.x - pos.x) * 0.02 * depthFactor,
+            strength * 0.07 * depthFactor
           );
         }
       }
 
-      vec2 uv2 = uv + distortion;
+      // ✅ CAMERA PARALLAX OFFSET
+      vec2 camOffset = vec2(
+        (0.5 - uv.x) * 0.01,
+        (0.5 - uv.y) * 0.01
+      );
+
+      vec2 uv2 = uv + distortion + camOffset;
 
       vec4 bg = texture2D(background, uv2);
       vec4 ph = texture2D(phoenix, uv2);
 
-      // ✅ subtle phoenix (ambient only)
       float phLight = dot(ph.rgb, vec3(0.2126,0.7152,0.0722));
       phLight *= 0.18;
 
@@ -120,13 +153,10 @@ const material = new THREE.ShaderMaterial({
 
       vec3 color = bg.rgb;
 
-      // ONLY show through water
       color += gold * phLight * mask;
 
-      // subtle highlight
       color += length(distortion) * 0.6;
 
-      // micro grain
       float grain = fract(sin(dot(uv * 900.0, vec2(12.9,78.2))) * 43758.5);
       color += (grain - 0.5) * 0.008;
 
@@ -149,20 +179,33 @@ function updateDrops() {
     if (droplets[i].life <= 0) droplets.splice(i,1);
   }
 
-  for (let i = 0; i < 50; i++) {
-    if (droplets[i]) {
-      dropData[i*4] = droplets[i].x;
-      dropData[i*4+1] = droplets[i].y;
-      dropData[i*4+2] = droplets[i].radius;
-    } else {
-      dropData[i*4] = -10;
-    }
+  let index = 0;
+
+  droplets.forEach(d => {
+    d.trail.forEach(t => {
+      if (index < 100) {
+        dropData[index*4] = t.x;
+        dropData[index*4+1] = t.y;
+        dropData[index*4+2] = d.radius * 0.8;
+        dropData[index*4+3] = d.layer;
+        index++;
+      }
+    });
+  });
+
+  for (let i = index; i < 100; i++) {
+    dropData[i*4] = -10;
   }
 }
 
 // ===== LOOP =====
 function animate() {
   updateDrops();
+
+  // ✅ apply parallax camera movement
+  scene.position.x = mouseX * 0.03;
+  scene.position.y = -mouseY * 0.03;
+
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
