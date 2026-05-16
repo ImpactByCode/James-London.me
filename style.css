@@ -11,13 +11,21 @@ body, html {
   height: 100vh;
 }
 
-/* ✅ GLASS LAYER (NEW) */
+/* ✅ GLASS LAYER */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(3px) contrast(1.05);
-  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(2px) contrast(1.03);
+  background: rgba(255,255,255,0.015);
+}
+
+/* ✅ SLIGHT DARK CINEMATIC VIGNETTE */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.5));
 }
 
 canvas {
@@ -29,18 +37,18 @@ canvas {
 /* UI */
 .ui {
   position: absolute;
-  bottom: 15%;
+  bottom: 18%;
   width: 100%;
   text-align: center;
-  color: #f5d07a;
+  color: #e6c36a;
   z-index: 2;
+  letter-spacing: 2px;
 }
 
 button {
   margin-top: 20px;
   padding: 12px 30px;
   color: gold;
-  background: rgba(255,215,0,0.1);
-  border: 1px solid gold;
-  cursor: pointer;
+  background: rgba(255,215,0,0.08);
+  border: 1px solid rgba(255,215,0,0.5);
 }
