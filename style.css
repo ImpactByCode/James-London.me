@@ -11,6 +11,15 @@ body, html {
   height: 100vh;
 }
 
+/* ✅ GLASS LAYER (NEW) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(3px) contrast(1.05);
+  background: rgba(255,255,255,0.02);
+}
+
 canvas {
   position: absolute;
   top: 0;
@@ -35,24 +44,3 @@ button {
   border: 1px solid gold;
   cursor: pointer;
 }
-
-/* HUD */
-.hud {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.panel {
-  position: absolute;
-  padding: 10px 18px;
-  border: 1px solid rgba(255,215,0,0.4);
-  color: #f5d07a;
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(8px);
-}
-
-/* Panel positions */
-#pA { top: 30%; left: 10%; }
-#pB { top: 25%; right: 10%; }
-#pC { top: 50%; right: 20%; }
