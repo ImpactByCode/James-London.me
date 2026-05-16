@@ -4,81 +4,90 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  color: white;
+html, body {
+  height: 100%;
+  font-family: 'Cinzel', serif;
+  overflow: hidden;
 }
 
-/* BACKGROUND */
+/* Background */
 .background {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url('assets/tulsa.jpg') center/cover no-repeat;
-  z-index: -1;
+  inset: 0;
+  background: url('/assets/tulsa.jpg') center center / cover no-repeat;
+  z-index: 0;
 }
 
-/* HEADER */
-.header {
+/* Dark overlay for cinematic look */
+.background::after {
+  content: "";
   position: absolute;
-  top: 0;
-  width: 100%;
-  padding: 30px 50px;
-  display: flex;
-  justify-content: space-between;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
 }
 
-.logo {
-  letter-spacing: 4px;
-  font-size: 18px;
+/* Top Left Branding */
+.brand {
+  position: fixed;
+  top: 30px;
+  left: 40px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: white;
+  z-index: 10;
+}
+
+/* Top Right Navigation */
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  display: flex;
+  gap: 30px;
+  z-index: 10;
 }
 
 .nav a {
-  margin-left: 30px;
   text-decoration: none;
   color: white;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
 }
 
-/* CENTER */
-.main {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.nav a:hover {
+  opacity: 1;
 }
 
-/* CARD (CENTER BOX) */
-.card {
-  width: 600px;
+/* Center Container */
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 520px;
   padding: 50px;
-  background: rgba(15,15,15,0.75);
-  border: 1px solid rgba(255,215,0,0.3);
-}
 
-/* LOGO */
-.logo-wrap {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+
   text-align: center;
-  margin-bottom: 40px;
+  color: white;
+
+  z-index: 5;
 }
 
-.logo-wrap img {
-  width: 140px;
+/* Logo */
+.logo {
+  width: 220px;
+  margin-bottom: 20px;
 }
 
-/* CONTENT STACKED */
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-/* BLOCK SECTIONS */
-.block h2 {
-  color: gold;
-  margin-bottom: 8px;
-}
-
-.block p {
+/* Tagline */
+.tagline {
+  font-size: 16px;
+  letter-spacing: 2px;
   opacity: 0.85;
 }
