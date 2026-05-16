@@ -12,18 +12,21 @@ body {
     color: white;
 }
 
-/* BACKGROUND (CRISP — NO BLUR) */
+/* ✅ BACKGROUND — SHARP */
 .background {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: url('assets/tulsa.jpg') no-repeat center center/cover;
+
+    background: url('assets/tulsa.jpg') no-repeat center center;
+    background-size: cover;
+
     z-index: -2;
 
-    transform: scale(1.05);
+    transform: none; /* ✅ REMOVED SCALE BLUR */
 }
 
-/* RAIN LAYER */
+/* ✅ RAIN */
 #rainCanvas {
     position: fixed;
     top: 0;
@@ -59,7 +62,7 @@ body {
     text-decoration: none;
     color: white;
     font-size: 14px;
-    opacity: 0.85;
+    opacity: 0.9;
 }
 
 .nav a:hover {
@@ -74,20 +77,19 @@ body {
     height: 100%;
 }
 
-/* ✅ PARCHMENT — FIXED (NO BLUR, CINEMATIC GLASS) */
+/* ✅ PARCHMENT — NO BLUR AT ALL */
 .parchment {
     width: 900px;
     padding: 40px;
     border-radius: 12px;
 
-    /* DARK GLASS INSTEAD OF BLUR */
-    background: rgba(20, 20, 20, 0.65);
+    background: rgba(20, 20, 20, 0.7);
 
     border: 1px solid rgba(255, 215, 0, 0.25);
 
     box-shadow:
-        0 0 30px rgba(0,0,0,0.6),
-        inset 0 0 20px rgba(255,215,0,0.05);
+        0 0 40px rgba(0,0,0,0.7),
+        inset 0 0 10px rgba(255,215,0,0.08);
 }
 
 /* LOGO */
@@ -99,7 +101,6 @@ body {
 
 .center-logo img {
     width: 160px;
-    opacity: 0.95;
 }
 
 /* CONTENT */
@@ -113,17 +114,10 @@ body {
     padding: 20px;
     border-radius: 8px;
 
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,215,0,0.2);
+    background: rgba(0,0,0,0.5);
 }
 
 .panel h2 {
     margin-bottom: 10px;
-    font-size: 18px;
     color: gold;
-}
-
-.panel p {
-    font-size: 14px;
-    opacity: 0.85;
 }
