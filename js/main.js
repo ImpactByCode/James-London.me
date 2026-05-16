@@ -15,62 +15,51 @@ for (let i = 0; i < dropCount; i++) {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
 
-        speed: 4 + depth * 10,
-        length: 10 + depth * 25,
+        speed: 4 + depth * 8,
+        length: 10 + depth * 20,
 
-        thickness: 0.5 + depth * 1.5,
-        opacity: 0.15 + depth * 0.7,
+        thickness: 0.6 + depth * 1.2,
+        opacity: 0.2 + depth * 0.6,
 
-        wind: 0.3 + Math.random() * 0.5,
-
-        // ✅ TRAIL MEMORY
-        trail: []
+        wind: 0.4 + Math.random() * 0.6
     });
 }
 
 // ===== DRAW LOOP =====
 function drawRain() {
-    // IMPORTANT: semi-clear = motion blur effect
-    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // ✅ HARD CLEAR (NO BLUR)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drops.forEach(drop => {
-        // store trail
-        drop.trail.push({ x: drop.x, y: drop.y });
+        ctx.beginPath();
 
-        if (drop.trail.length > 5) {
-            drop.trail.shift();
-        }
+        // ✅ tapered gradient (real streak look)
+        const gradient = ctx.createLinearGradient(
+            drop.x,
+            drop.y,
+            drop.x + drop.wind * 2,
+            drop.y + drop.length
+        );
 
-        for (let i = 0; i < drop.trail.length; i++) {
-            const t = drop.trail[i];
-            const alpha = (i / drop.trail.length) * drop.opacity;
+        gradient.addColorStop(0, `rgba(255,255,255,0)`);
+        gradient.addColorStop(0.4, `rgba(255,255,255,${drop.opacity})`);
+        gradient.addColorStop(1, `rgba(255,255,255,0)`);
 
-            ctx.beginPath();
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = drop.thickness;
 
-            ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-            ctx.lineWidth = drop.thickness;
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x + drop.wind * 2, drop.y + drop.length);
+        ctx.stroke();
 
-            ctx.moveTo(t.x, t.y);
-            ctx.lineTo(
-                t.x + drop.wind * 2,
-                t.y + drop.length
-            );
-
-            ctx.stroke();
-        }
-
-        // ✅ GRAVITY ACCELERATION
-        drop.speed += 0.05;
+        // ✅ controlled motion (no smear needed)
         drop.y += drop.speed;
         drop.x += drop.wind;
 
-        // reset
+        // ✅ reset
         if (drop.y > canvas.height) {
             drop.y = -20;
             drop.x = Math.random() * canvas.width;
-            drop.speed = 4 + drop.opacity * 10;
-            drop.trail = [];
         }
     });
 
