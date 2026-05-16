@@ -1,69 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>James London | Architect of Restoration</title>
 
-  <!-- ✅ CORRECT CSS LINK -->
-  <link rel="stylesheet" href="css/style.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="./style.css">
+
 </head>
 
 <body>
 
-<header class="top-bar">
-  <div class="logo">JAMES LONDON</div>
+  <!-- BACKGROUND -->
+  <div class="background"></div>
 
-  <nav class="command-nav">
-    <button>FOUNDER'S VOICE</button>
-    <button>RESTORATION LOG</button>
-    <button>MY COMMS</button>
-  </nav>
-</header>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-text">JAMES LONDON</div>
 
-<main>
-  <section class="hero">
+    <nav class="nav">
+      <a href="#">LOG</a>
+      <a href="#">PROTOCOL</a>
+      <a href="#">CONTACT</a>
+    </nav>
+  </header>
 
-    <!-- GRID -->
-    <div class="grid-layer"></div>
+  <!-- CENTER CONTAINER -->
+  <main class="center-container">
+    
+    <div class="parchment">
 
-    <!-- RAIN -->
-    <canvas id="rain"></canvas>
+      <img src="phoenix.png" alt="Phoenix Logo" class="phoenix">
 
-    <!-- ✅ CORRECT IMAGE -->
-    <div class="phoenix-core">
-      <img src="assets/phoenix.png" alt="Phoenix">
+      <h1>THE ARCHITECT<br>OF RESTORATION</h1>
+
+      <p class="tagline">
+        Restoring the Future: Faith, Space, Code.
+      </p>
+
+      <button class="cta">
+        INITIATE PROTOCOL ⚙️
+      </button>
+
     </div>
 
-    <!-- PROTOCOLS -->
-    <div class="protocol protocol-a">
-      PROTOCOL A: SYNTHETIC REBIRTH
-    </div>
+  </main>
 
-    <div class="protocol protocol-b">
-      PROTOCOL B: DIGITAL INTEGRITY
-    </div>
-
-    <div class="protocol protocol-c">
-      PROTOCOL C: SPATIAL SYNTHESIS
-    </div>
-
-    <!-- TEXT -->
-    <div class="headline">
-      <h1>THE ARCHITECT OF RESTORATION</h1>
-      <p>(Restoring the Future: Faith, Space, Code.)</p>
-    </div>
-
-    <!-- CTA -->
-    <button class="cta">INITIATE PROTOCOL</button>
-
-  </section>
-</main>
-
-<div class="system-controls">⚙️</div>
-
-<!-- ✅ CORRECT JS LOAD -->
-<script src="js/main.js"></script>
+  <!-- JS -->
+  <script src="./app.js"></script>
 
 </body>
 </html>
-``
